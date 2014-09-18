@@ -272,21 +272,8 @@ class GraphAPI(object):
         return result
 
     def batch(self, batch_components_iterable):
-        """Performes facebook batch request, see:
+        """Performs facebook batch request, see:
         https://developers.facebook.com/docs/graph-api/making-multiple-requests
-
-        :param batch_components_iterable:
-        :return: list of responses eg.:
-        [
-            { "code": 200,
-              "headers": [
-                  { "name":"Content-Type",
-                    "value":"text/javascript; charset=UTF-8"}
-               ],
-              "body":"{\"id\":\"…\"}"
-            },
-            None,None,None
-        ]
         """
         bcl = list(batch_components_iterable)
         if len(bcl) > 50:
