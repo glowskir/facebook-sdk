@@ -220,7 +220,7 @@ class GraphAPI(object):
             raise GraphAPIError("API version number not available")
 
     def request(
-            self, path, args=None, post_args=None, files=None, method=None):
+            self, path, args=None, post_args=None, files=None, method="GET"):
         """Fetches the given path in the Graph API.
 
         We translate args to a valid query string. If post_args is
@@ -237,7 +237,7 @@ class GraphAPI(object):
                 args["access_token"] = self.access_token
 
         try:
-            response = requests.request(method or "GET",
+            response = requests.request(method,
                                         "https://graph.facebook.com/" +
                                         self.version + path,
                                         timeout=self.timeout,
@@ -265,7 +265,7 @@ class GraphAPI(object):
             else:
                 raise GraphAPIError(response.json())
         else:
-            raise GraphAPIError('Maintype was not text, image, or querystring')
+            raise GraphAPIError(response)
 
         if result and isinstance(result, dict) and result.get("error"):
             raise GraphAPIError(result)
@@ -277,7 +277,7 @@ class GraphAPI(object):
         Example query: "SELECT affiliations FROM user WHERE uid = me()"
 
         """
-        self.request("fql", {"q": query})
+        return self.request("fql", {"q": query})
 
     def get_app_access_token(self, app_id, app_secret):
         """Get the application's access token as a string."""
