@@ -271,6 +271,35 @@ class GraphAPI(object):
             raise GraphAPIError(result)
         return result
 
+    def batch(self, batch_components_iterable):
+        """Performes facebook batch request, see:
+        https://developers.facebook.com/docs/graph-api/making-multiple-requests
+
+        :param batch_components_iterable:
+        :return: list of responses eg.:
+        [
+            { "code": 200,
+              "headers": [
+                  { "name":"Content-Type",
+                    "value":"text/javascript; charset=UTF-8"}
+               ],
+              "body":"{\"id\":\"…\"}"
+            },
+            None,None,None
+        ]
+        """
+        bcl = list(batch_components_iterable)
+        if len(bcl) > 50:
+            raise ValueError(
+                "Batch size must be less than 50 due to throttling.")
+        return self.request(
+            '',
+            dict(batch=json.dumps(batch_components_iterable)),
+            {},
+            None,
+            'POST'
+        )
+
     def fql(self, query):
         """FQL query.
 
