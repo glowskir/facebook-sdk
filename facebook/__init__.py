@@ -281,7 +281,7 @@ class GraphAPI(object):
                 "Batch size must be less than 50 due to throttling.")
         return self.request(
             '',
-            dict(batch=json.dumps(batch_components_iterable)),
+            dict(batch=json.dumps(bcl)),
             {},
             None,
             'POST'
